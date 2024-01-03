@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="dF aI-center jC-center h-inh" *ngIf="fetchState === 'init'">
+    <div class="loader--lg"></div>
+  </div>
+  <div *ngIf="fetchState !== 'init'">
+    <div class="title-container px-20">
+      <p class="text-white text-28 font-700">To Do</p>
+    </div>
+    <div class="create-container">
+      <form class="dF aI-center w-full" (ngSubmit)="createTodo()" autocomplete="off">
+        <input type="text" name="notes" [(ngModel)]="notes" placeholder="Enter a Task" class="input input--valid"
+          [readOnly]="submitting" />
+        <button class="btn btn--primary ml-10" type="submit" [disabled]="notes.length === 0 || submitting">
+          Create Task
+          <div class="btn--primary__loader ml-5" *ngIf="submitting"></div>
+        </button>
+      </form>
+    </div>
+    <div class="task-container">
+      <div class="p-20 dF jC-center" *ngIf="todoItems.length === 0">
+        <p class="text-info text-16">No tasks available, Create a new task.</p>
+      </div>
+      <div *ngIf="todoItems.length !== 0">
+        <app-task *ngFor="let item of todoItems; let i = index" [notes]="item.notes" [index]="i + 1" [id]="item.id"
+          [isLast]="i === todoItems.length - 1" (removeTodo)="removeTodo($event)" (changePage)="changePage()" #task>
+        </app-task>
+      </div>
+
+      <div class="dF jC-center my-5" *ngIf="fetchState === 'loading'">
+        <div class="loader--sm"></div>
+      </div>
+    </div>
+  </div>
+</div>
